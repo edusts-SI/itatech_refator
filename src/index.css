@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #3b82f6;
+  --color-brand-dark: #050814;
+}
+
+body {
+  @apply bg-[#050814] text-slate-300 antialiased selection:bg-blue-500/30 selection:text-blue-200 overflow-x-hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.glass-card {
+  @apply bg-slate-900/40 backdrop-blur-xl border border-slate-800 shadow-2xl;
+}
+
+.bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400;
+}
+
+.text-gradient-blue {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-600;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050814; 
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b; 
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155; 
+}
