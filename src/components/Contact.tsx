@@ -1,7 +1,56 @@
-import { motion } from 'motion/react';
-import { Send, MapPin, Mail, Terminal } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, MapPin, Mail, Terminal, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function Contact() {
+  const [formData, setFormData] = useState({ name: '', email: '', details: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.details) {
+      setStatus('error');
+      setErrorMessage('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      setStatus('error');
+      setErrorMessage('Por favor, insira um e-mail válido.');
+      return;
+    }
+
+    setStatus('loading');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao enviar mensagem');
+      }
+
+      setStatus('success');
+      setFormData({ name: '', email: '', details: '' });
+      
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage('Ocorreu um erro ao enviar sua mensagem. Tente novamente mais tarde.');
+    }
+  };
+
   return (
     <section id="contato" className="py-32 relative border-t border-slate-800">
       
@@ -53,7 +102,8 @@ export default function Contact() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="glass-card p-8 md:p-12 rounded-[2rem]"
+              onSubmit={handleSubmit}
+              className="glass-card p-8 md:p-12 rounded-[2rem] relative"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
@@ -61,6 +111,8 @@ export default function Contact() {
                   <input 
                     type="text" 
                     placeholder="João Silva"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                     className="w-full px-5 py-4 rounded-xl bg-slate-950/50 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:bg-slate-900 transition-colors"
                   />
                 </div>
@@ -69,6 +121,8 @@ export default function Contact() {
                   <input 
                     type="email" 
                     placeholder="joao@empresa.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
                     className="w-full px-5 py-4 rounded-xl bg-slate-950/50 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:bg-slate-900 transition-colors"
                   />
                 </div>
@@ -79,13 +133,53 @@ export default function Contact() {
                 <textarea 
                   rows={5}
                   placeholder="Descreva brevemente o desafio tecnológico que você quer resolver..."
+                  value={formData.details}
+                  onChange={(e) => setFormData({...formData, details: e.target.value})}
                   className="w-full px-5 py-4 rounded-xl bg-slate-950/50 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:bg-slate-900 transition-colors resize-none"
                 ></textarea>
               </div>
 
-              <button type="button" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 group">
-                <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                Transmitir Requisitos
+              <AnimatePresence>
+                {status === 'error' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mb-6 flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20"
+                  >
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm font-medium">{errorMessage}</span>
+                  </motion.div>
+                )}
+                {status === 'success' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mb-6 flex items-center gap-2 text-emerald-400 bg-emerald-400/10 p-3 rounded-lg border border-emerald-400/20"
+                  >
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm font-medium">Mensagem enviada com sucesso! Entraremos em contato em breve.</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <button 
+                type="submit" 
+                disabled={status === 'loading'}
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 group"
+              >
+                {status === 'loading' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Transmitindo...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    Transmitir Requisitos
+                  </>
+                )}
               </button>
             </motion.form>
           </div>

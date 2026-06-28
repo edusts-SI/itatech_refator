@@ -1,5 +1,5 @@
 import { Monitor, LayoutGrid, Smartphone, MessageSquare, Clock, Database } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 const services = [
   {
