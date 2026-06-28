@@ -87,22 +87,22 @@ const MockupBatala = () => (
       
       <div className="space-y-4 w-full">
         <div>
-          <label className="block text-black text-xs font-medium mb-1">CPF</label>
+          <label htmlFor="mockup-cpf" className="block text-black text-xs font-medium mb-1">CPF</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
               <User className="w-4 h-4 text-gray-500" />
             </div>
-            <input type="text" className="w-full bg-white border-none py-2 pl-8 pr-3 text-sm focus:ring-0" />
+            <input type="text" id="mockup-cpf" name="mockup-cpf" className="w-full bg-white border-none py-2 pl-8 pr-3 text-sm focus:ring-0" />
           </div>
         </div>
         
         <div>
-          <label className="block text-black text-xs font-medium mb-1">Senha</label>
+          <label htmlFor="mockup-senha" className="block text-black text-xs font-medium mb-1">Senha</label>
           <div className="relative border-b-2 border-black pb-1">
             <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
               <Lock className="w-4 h-4 text-gray-700" />
             </div>
-            <input type="password" value="*********" readOnly className="w-full bg-white border-none py-2 pl-8 pr-8 text-sm focus:ring-0" />
+            <input type="password" id="mockup-senha" name="mockup-senha" value="*********" readOnly className="w-full bg-white border-none py-2 pl-8 pr-8 text-sm focus:ring-0" />
             <div className="absolute inset-y-0 right-0 pr-2 flex items-center">
               <Eye className="w-4 h-4 text-black" />
             </div>
@@ -110,8 +110,8 @@ const MockupBatala = () => (
         </div>
         
         <div className="flex items-center gap-2 pt-1">
-          <input type="checkbox" className="w-3 h-3 rounded-sm border-gray-400" />
-          <span className="text-xs text-gray-700">Permanecer Conectado</span>
+          <input type="checkbox" id="mockup-lembrar" name="mockup-lembrar" className="w-3 h-3 rounded-sm border-gray-400" />
+          <label htmlFor="mockup-lembrar" className="text-xs text-gray-700">Permanecer Conectado</label>
         </div>
         
         <button className="w-full bg-[#6c757d] text-white py-2.5 rounded-md text-sm font-medium mt-2">
