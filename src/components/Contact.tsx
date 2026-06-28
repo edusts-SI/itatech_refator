@@ -1,7 +1,31 @@
-import { motion } from 'framer-motion';
-import { Send, MapPin, Mail, Terminal } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, MapPin, Mail, Terminal, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function Contact() {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+    const myForm = e.currentTarget;
+    const formData = new FormData(myForm);
+    
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData as any).toString(),
+    })
+      .then(() => {
+        setStatus('success');
+        myForm.reset();
+        setTimeout(() => setStatus('idle'), 5000);
+      })
+      .catch(() => {
+        setStatus('error');
+      });
+  };
+
   return (
     <section id="contato" className="py-32 relative border-t border-slate-800">
       
@@ -55,9 +79,9 @@ export default function Contact() {
               viewport={{ once: true }}
               name="contact"
               method="POST"
-              action="/"
               data-netlify="true"
               netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
               className="glass-card p-8 md:p-12 rounded-[2rem] relative"
             >
               <input type="hidden" name="form-name" id="form-name" value="contact" />
@@ -102,12 +126,47 @@ export default function Contact() {
                 ></textarea>
               </div>
 
+              <AnimatePresence>
+                {status === 'error' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mb-6 flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20"
+                  >
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm font-medium">Ocorreu um erro ao enviar sua mensagem. Tente novamente.</span>
+                  </motion.div>
+                )}
+                {status === 'success' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mb-6 flex items-center gap-2 text-emerald-400 bg-emerald-400/10 p-3 rounded-lg border border-emerald-400/20"
+                  >
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm font-medium">Mensagem enviada com sucesso! Entraremos em contato em breve.</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <button 
                 type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 group"
+                disabled={status === 'loading'}
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 group"
               >
-                <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                Transmitir Requisitos
+                {status === 'loading' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Transmitindo...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    Transmitir Requisitos
+                  </>
+                )}
               </button>
             </motion.form>
           </div>
