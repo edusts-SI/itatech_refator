@@ -55,13 +55,14 @@ export default function Contact() {
               viewport={{ once: true }}
               name="contact"
               method="POST"
+              action="/"
               data-netlify="true"
               netlify-honeypot="bot-field"
               className="glass-card p-8 md:p-12 rounded-[2rem] relative"
             >
-              <input type="hidden" name="form-name" value="contact" />
+              <input type="hidden" name="form-name" id="form-name" value="contact" />
               <div hidden>
-                <input name="bot-field" />
+                <input name="bot-field" id="bot-field" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
