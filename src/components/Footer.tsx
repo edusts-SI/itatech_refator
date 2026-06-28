@@ -6,7 +6,7 @@ export default function Footer() {
           <div className="max-w-xs">
             <div className="flex items-center gap-1 mb-6">
               <span className="font-extrabold text-2xl tracking-tighter text-white">
-                &lt;;tatech<span className="text-blue-500 text-lg">jr</span>&gt;
+                &lt;itatech<span className="text-blue-500 text-lg">jr</span>&gt;
               </span>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed">

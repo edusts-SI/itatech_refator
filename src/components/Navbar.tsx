@@ -28,7 +28,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
         <a href="#inicio" className="flex items-center group">
            <span className="font-extrabold text-2xl tracking-tighter text-white group-hover:text-blue-400 transition-colors">
-            &lt;;tatech<span className="text-blue-500 text-lg group-hover:text-white transition-colors">jr</span>&gt;
+            &lt;itatech<span className="text-blue-500 text-lg group-hover:text-white transition-colors">jr</span>&gt;
            </span>
         </a>
         
