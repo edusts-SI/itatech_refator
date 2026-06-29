@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, MapPin, Mail, Terminal, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
+import { CONTACT_EMAIL } from '../config/constants';
+
 export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -56,7 +58,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-slate-500 font-bold text-xs tracking-widest uppercase mb-1">Comunicação Direta</h4>
-                    <p className="text-white font-medium text-lg">contato@itatechjr.com.br</p>
+                    <p className="text-white font-medium text-lg">{CONTACT_EMAIL}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

@@ -24,7 +24,7 @@ async function startServer() {
 
     // Here you would integrate with a real email sending service like Resend, Sendgrid or nodemailer
     // For this example, we mock a successful submission.
-    console.log(`[Email System Mock] Sending email to contato@itatechjr.com.br...`);
+    console.log(`[Email System Mock] Sending email to edusts82@gmail.com...`);
     console.log(`[Email System Mock] From: ${name} <${email}>`);
     console.log(`[Email System Mock] Message: ${details}`);
     console.log(`[Email System Mock] Email sent successfully!`);
